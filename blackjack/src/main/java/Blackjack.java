@@ -1,19 +1,62 @@
 public class Blackjack {
 
     public int parseCard(String card) {
-        throw new UnsupportedOperationException("Please implement the Blackjack.parseCard method");
+        switch (card) {
+            case "ace":
+                return 11;
+            case "two":
+                return 2;
+            case "three":
+                return 3;
+            case "four":
+                return 4;
+            case "five":
+                return 5;
+            case "six":
+                return 6;
+            case "seven":
+                return 7;
+            case "eight":
+                return 8;
+            case "nine":
+                return 9;
+            case "ten":
+            case "jack":
+            case "queen":
+            case "king":
+                return 10;
+            default:
+                return 0;
+        }
     }
 
     public boolean isBlackjack(String card1, String card2) {
-        throw new UnsupportedOperationException("Please implement the Blackjack.isBlackjack method");
+        int num1 = parseCard(card1);
+        int num2 = parseCard(card2);
+        return num1 + num2 == 21;
     }
 
     public String largeHand(boolean isBlackjack, int dealerScore) {
-        throw new UnsupportedOperationException("Please implement the Blackjack.largeHand method");
+        boolean beAbleToWin = !(dealerScore == 11) && !(dealerScore == 10);
+        if (isBlackjack && beAbleToWin) {
+            return "W";
+        } else {
+            return "S";
+        }
     }
 
     public String smallHand(int handScore, int dealerScore) {
-        throw new UnsupportedOperationException("Please implement the Blackjack.smallHand method");
+        if (handScore >= 17) {
+            return "S";
+        } else if (handScore <= 11) {
+            return "H";
+        } else {
+            if (dealerScore >= 7) {
+                return "H";
+            } else {
+                return "S";
+            }
+        }
     }
 
     // FirstTurn returns the semi-optimal decision for the first turn, given the cards of the player and the dealer.
@@ -22,6 +65,10 @@ public class Blackjack {
     public String firstTurn(String card1, String card2, String dealerCard) {
         int handScore = parseCard(card1) + parseCard(card2);
         int dealerScore = parseCard(dealerCard);
+
+        if (card1 == "ace" && card2 == "ace") {
+            return "P";
+        }
 
         if (20 < handScore) {
             return largeHand(isBlackjack(card1, card2), dealerScore);
